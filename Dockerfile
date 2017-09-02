@@ -45,6 +45,6 @@ WORKDIR /src/kodi/
 RUN wget -q https://raw.githubusercontent.com/nsenica/xbmc/krypton_new/tools/Linux/packaging/build_rpi_debian_packages.sh \
   && chmod +x build_rpi_debian_packages.sh
 
-RUN build_rpi_debian_packages.sh
+#RUN ./build_rpi_debian_packages.sh
 
 RUN [ "cross-build-end" ]
