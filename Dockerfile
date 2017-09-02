@@ -31,7 +31,7 @@ ARG BUILD_DEPENDENCIES="git wget curl devscripts build-essential \
   libtinyxml-dev libtool libudev-dev libva-dev libvdpau-dev libvorbis-dev libxmu-dev \
   libxrandr-dev libxslt1-dev libxt-dev libyajl-dev nasm python-dev python-imaging swig \
   uuid-dev yasm zip zlib1g-dev bluez libspeex-dev libspeexdsp-dev libdvdread-dev libdvdnav-dev \
-  libcec4-dev libcrossguid-dev libgif-dev libbluray-dev libshairplay-dev libraspberrypi0"
+  libcec4-dev libcrossguid-dev libgif-dev libbluray-dev libshairplay-dev libraspberrypi0 libraspberrypi-dev"
 
 RUN apt-get install --no-install-recommends -y $BUILD_DEPENDENCIES && apt-get clean
 
