@@ -1,4 +1,4 @@
-FROM resin/rpi-raspbian
+FROM resin/rpi-raspbian:jessie
 
 RUN [ "cross-build-start" ]
 
@@ -32,9 +32,9 @@ ARG BUILD_DEPENDENCIES="git wget curl devscripts build-essential \
 #RUN apt-get install --no-install-recommends -y $BUILD_DEPENDENCIES && apt-get clean
 RUN apt-get install --no-install-recommends -y $BUILD_DEPENDENCIES && apt-get clean
 
-## get sources with git 
+## get sources with git
 RUN mkdir -p /src/kodi/\
-    && git clone --depth 1 git://github.com/xbmc/xbmc.git /src/kodi && mkdir -p /src/kodi/build 
+    && git clone --depth 1 git://github.com/xbmc/xbmc.git /src/kodi && mkdir -p /src/kodi/build
 
 WORKDIR /src/kodi/build
 
