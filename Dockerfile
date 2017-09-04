@@ -38,7 +38,8 @@ ARG BUILD_DEPENDENCIES="git wget curl devscripts build-essential \
 RUN apt-get install --no-install-recommends -y $BUILD_DEPENDENCIES && apt-get clean
 
 # install RUNTIME dependancies
-ARG RUNTIME_DEPENDENCIES="xserver-xorg xinit fbset alsa-base alsa-utils alsa-tools xserver-xorg-legacy dbus-x11"
+ARG RUNTIME_DEPENDENCIES="xserver-xorg xinit fbset alsa-base alsa-utils alsa-tools xserver-xorg-legacy dbus-x11 \
+   python-bluez mesa-utils python-lightblue python-simplejson libaacs0"
 
 RUN apt-get install --no-install-recommends -y $RUNTIME_DEPENDENCIES && apt-get clean
 
@@ -60,7 +61,7 @@ RUN  mkdir -p /config/kodi/userdata >/dev/null 2>&1 || true && rm -rf /root/.kod
     && mkdir -p /data >/dev/null 2>&1
 
 # get sources with git
-RUN mkdir -p /src/kodi/\
+RUN mkdir -p /src/kodi/ \
 && git clone --depth 1 "$GITURL" /src/kodi
 
 WORKDIR /src/kodi/
@@ -71,6 +72,9 @@ RUN wget -q https://raw.githubusercontent.com/nsenica/xbmc/krypton_new/tools/Lin
 
 # compile
 RUN ./build_rpi_debian_packages.sh
+
+# install packages
+RUN dpkg -i packages/*.deb
 
 # uncomment if you want to enable webserver and remote control settings
 COPY "./files-to-copy-to-image/settings.xml" "/usr/share/kodi/system/settings"
