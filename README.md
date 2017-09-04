@@ -1,6 +1,6 @@
 ## kodi-compiler-rpi Dockerfile
 
-This repository contains **Dockerfile** , based on a Raspbian image, for a dockerized compiled version of [Kodi](https://kodi.tv/download).
+This repository contains a **Dockerfile** for a dockerized compiled version of [Kodi](https://kodi.tv/download), based on a Raspbian image.
 It get sources from the [Kodi Main Repository](https://github.com/xbmc/xbmc/) and compile a Kodi from it.
 The steps are based on [NUNO SÉNICA Blog] (http://blog.nunosenica.com/compiling-kodi-and-building-deb-packages-raspbian/)
 
