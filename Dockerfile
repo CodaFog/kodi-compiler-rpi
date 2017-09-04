@@ -2,12 +2,12 @@ FROM resin/rpi-raspbian:jessie
 
 RUN [ "cross-build-start" ]
 
-# CPU argument for Raspberry Pi 2 or 3
-ARG CPU=cortex-a7
-# CPU argument for Raspberry Pi 0
-#ARG CPU=arm1176jzf-s
-ARG GITURL="git://github.com/xbmc/xbmc.git"
-ARG GITBRANCH="Krypton"
+## CPU argument for Raspberry Pi 2 or 3
+#ARG CPU=cortex-a7
+## CPU argument for Raspberry Pi 0
+##ARG CPU=arm1176jzf-s
+#ARG GITURL="git://github.com/xbmc/xbmc.git"
+#ARG GITBRANCH="Krypton"
 
 RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y apt-utils wget && apt-get clean
 
@@ -59,30 +59,30 @@ COPY "./files-to-copy-to-image/99-input.rules" "/etc/udev/rules.d"
 RUN  mkdir -p /config/kodi/userdata >/dev/null 2>&1 || true && rm -rf /root/.kodi && ln -s /config/kodi /root/.kodi \
     && mkdir -p /data >/dev/null 2>&1
 
-# get sources with git
-RUN mkdir -p /src/kodi/ \
-&& git clone --depth 1 "$GITURL" --branch "$GITBRANCH" /src/kodi
+## get sources with git
+#RUN mkdir -p /src/kodi/ \
+#&& git clone --depth 1 "$GITURL" --branch "$GITBRANCH" /src/kodi
 
-WORKDIR /src/kodi/
+#WORKDIR /src/kodi/
 
-# Use a script to compile and build the kodi package
-RUN wget -q https://raw.githubusercontent.com/nsenica/xbmc/krypton_new/tools/Linux/packaging/build_rpi_debian_packages.sh \
-  && chmod +x build_rpi_debian_packages.sh
+## Use a script to compile and build the kodi package
+#RUN wget -q https://raw.githubusercontent.com/nsenica/xbmc/krypton_new/tools/Linux/packaging/build_rpi_debian_packages.sh \
+#  && chmod +x build_rpi_debian_packages.sh
 
-# compile
-RUN ./build_rpi_debian_packages.sh
+## compile
+#RUN ./build_rpi_debian_packages.sh
 
-# install packages
-RUN dpkg -i packages/*.deb
+## install packages
+#RUN dpkg -i packages/*.deb
 
-# uncomment if you want to enable webserver and remote control settings
-COPY "./files-to-copy-to-image/settings.xml" "/usr/share/kodi/system/settings"
+## uncomment if you want to enable webserver and remote control settings
+#COPY "./files-to-copy-to-image/settings.xml" "/usr/share/kodi/system/settings"
 
-# ports and volumes
-VOLUME /config/kodi
-VOLUME /data
-EXPOSE 8080 9777/udp
-
-CMD ["bash", "/usr/bin/kodi-standalone"]
+## ports and volumes
+#VOLUME /config/kodi
+#VOLUME /data
+#EXPOSE 8080 9777/udp
+#
+#CMD ["bash", "/usr/bin/kodi-standalone"]
 
 RUN [ "cross-build-end" ]
