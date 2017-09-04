@@ -6,9 +6,8 @@ RUN [ "cross-build-start" ]
 ARG CPU=cortex-a7
 # CPU argument for Raspberry Pi 0
 #ARG CPU=arm1176jzf-s
-ARG GITHUB="git://github.com/xbmc/xbmc.git"
-ARG GITBRANCH="--branch Krypton"
-ENV GITURL="$GITHUB $GITBRANCH"
+ARG GITURL="git://github.com/xbmc/xbmc.git"
+ARG GITBRANCH="Krypton"
 
 RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y apt-utils wget && apt-get clean
 
@@ -62,7 +61,7 @@ RUN  mkdir -p /config/kodi/userdata >/dev/null 2>&1 || true && rm -rf /root/.kod
 
 # get sources with git
 RUN mkdir -p /src/kodi/ \
-&& git clone --depth 1 "$GITURL" /src/kodi
+&& git clone --depth 1 "$GITURL" --branch "$GITBRANCH" /src/kodi
 
 WORKDIR /src/kodi/
 
