@@ -2,7 +2,7 @@ FROM resin/rpi-raspbian:jessie
 
 RUN [ "cross-build-start" ]
 
-#RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y apt-utils wget && apt-get clean
+RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y apt-utils wget && apt-get clean
 
 # add pipplware repo
 RUN echo "deb http://pipplware.pplware.pt/pipplware/dists/jessie/main/binary /" > /etc/apt/sources.list.d/pipplware.list \
@@ -10,7 +10,7 @@ RUN echo "deb http://pipplware.pplware.pt/pipplware/dists/jessie/main/binary /" 
     && wget -qO- http://pipplware.pplware.pt/pipplware/key.asc | apt-key add -
 
 # install BUILD dependancies
-ARG BUILD_DEPENDENCIES="git wget curl devscripts build-essential \
+ARG BUILD_DEPENDENCIES="git curl devscripts build-essential \
   autoconf automake autotools-dev cmake ccache autopoint doxygen \
   default-jre gawk gdc gperf libasound2-dev libass-dev \
   libavahi-client-dev libavahi-common-dev libbluetooth-dev libbluray-dev \
@@ -27,7 +27,7 @@ ARG BUILD_DEPENDENCIES="git wget curl devscripts build-essential \
   uuid-dev yasm zip zlib1g-dev bluez libspeex-dev libspeexdsp-dev libdvdread-dev libdvdnav-dev \
   libcec4-dev libcrossguid-dev libgif-dev libbluray-dev libshairplay-dev libraspberrypi0 libraspberrypi-dev"
 
-RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y $BUILD_DEPENDENCIES && apt-get clean
+RUN apt-get update && apt-get install --no-install-recommends -y $BUILD_DEPENDENCIES && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install libcpluff
 RUN mkdir -p /src/cpluff/ &&  git clone --depth 1 https://github.com/jlehtine/c-pluff /src/cpluff
@@ -38,10 +38,10 @@ RUN ./autogen.sh && ./configure && make &&  make install && rm -rf /src/*
 ARG RUNTIME_DEPENDENCIES="xserver-xorg xinit fbset alsa-base alsa-utils alsa-tools xserver-xorg-legacy dbus-x11 \
    python-bluez mesa-utils python-lightblue python-simplejson libaacs0"
 
-RUN apt-get install --no-install-recommends -y $RUNTIME_DEPENDENCIES && apt-get clean
+RUN apt-get update && apt-get install --no-install-recommends -y $RUNTIME_DEPENDENCIES && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configure Kodi group
-RUN rm -rf /var/lib/apt/lists/* && usermod -a -G audio root && \
+RUN usermod -a -G audio root && \
 usermod -a -G video root && \
 usermod -a -G input root && \
 usermod -a -G dialout root && \
