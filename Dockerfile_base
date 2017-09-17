@@ -10,6 +10,23 @@ RUN echo "deb http://pipplware.pplware.pt/pipplware/dists/jessie/main/binary /" 
     && wget -qO- http://pipplware.pplware.pt/pipplware/key.asc | apt-key add -
 
 # install BUILD dependancies
+#ARG BUILD_DEPENDENCIES="git curl devscripts build-essential \
+#  autoconf automake autotools-dev cmake ccache autopoint doxygen \
+#  default-jre gawk gdc gperf libasound2-dev libass-dev \
+#  libavahi-client-dev libavahi-common-dev libbluetooth-dev libbluray-dev \
+#  libboost-dev libboost-thread-dev libbz2-dev libcdio-dev libcurl4-openssl-dev \
+#  libcwiid-dev libdbus-1-dev libenca-dev libflac-dev libfontconfig-dev \
+#  libfreetype6-dev libfribidi-dev libgcrypt-dev libgl1-mesa-dev libglew-dev \
+#  libglu1-mesa-dev libgnutls28-dev libgpg-error-dev libiso9660-dev libjasper-dev \
+#  libjpeg-dev libltdl-dev liblzo2-dev libmad0-dev libmicrohttpd-dev libmodplug-dev \
+#  libmp3lame-dev libmpeg2-4-dev libmysqlclient-dev libnfs-dev libogg-dev libpcre3-dev \
+#  libplist-dev libpng12-dev libpulse-dev librtmp-dev libsamplerate-dev libsdl2-dev \
+#  libsmbclient-dev libsqlite3-dev libssh-dev libssl-dev libtag1-dev libtiff5-dev \
+#  libtinyxml-dev libtool libudev-dev libva-dev libvdpau-dev libvorbis-dev libxmu-dev \
+#  libxrandr-dev libxslt1-dev libxt-dev libyajl-dev nasm python-dev python-imaging swig \
+#  uuid-dev yasm zip zlib1g-dev bluez libspeex-dev libspeexdsp-dev libdvdread-dev libdvdnav-dev \
+#  libcec4-dev libcrossguid-dev libgif-dev libbluray-dev libshairplay-dev libraspberrypi0 libraspberrypi-dev"
+  
 ARG BUILD_DEPENDENCIES="git curl devscripts build-essential \
   autoconf automake autotools-dev cmake ccache autopoint doxygen \
   default-jre gawk gdc gperf libasound2-dev libass-dev \
@@ -25,20 +42,24 @@ ARG BUILD_DEPENDENCIES="git curl devscripts build-essential \
   libtinyxml-dev libtool libudev-dev libva-dev libvdpau-dev libvorbis-dev libxmu-dev \
   libxrandr-dev libxslt1-dev libxt-dev libyajl-dev nasm python-dev python-imaging swig \
   uuid-dev yasm zip zlib1g-dev bluez libspeex-dev libspeexdsp-dev libdvdread-dev libdvdnav-dev \
-  libcec4-dev libcrossguid-dev libgif-dev libbluray-dev libshairplay-dev libraspberrypi0 libraspberrypi-dev"
+  libcec4-dev libcrossguid-dev libgif-dev libbluray-dev libshairplay-dev libraspberrypi0 libraspberrypi-dev \
+  libao-dev libcap-dev libegl1-mesa-dev libmpcdec-dev libswscale-dev libusb-dev gettext \
+  libavcodec-dev libavfilter-dev cvs fp-compiler libavformat-dev libavutil-dev  \
+  libcurl3 libpng-dev libpostproc-dev libsdl-dev libsdl-gfx1.2-dev libsdl-image1.2-dev \
+  libsdl-mixer1.2-dev libtiff-dev libvorbisenc2 libxml2-dev libxrender-dev unzip mesa-utils"
 
 RUN apt-get update && apt-get install --no-install-recommends -y $BUILD_DEPENDENCIES && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install libcpluff
-RUN mkdir -p /src/cpluff/ &&  git clone --depth 1 https://github.com/jlehtine/c-pluff /src/cpluff
-WORKDIR /src/cpluff/
-RUN ./autogen.sh && ./configure && make &&  make install && rm -rf /src/*
+#RUN mkdir -p /src/cpluff/ &&  git clone --depth 1 https://github.com/jlehtine/c-pluff /src/cpluff
+#WORKDIR /src/cpluff/
+#RUN ./autogen.sh && ./configure && make &&  make install && rm -rf /src/*
 
 # install RUNTIME dependancies
-ARG RUNTIME_DEPENDENCIES="xserver-xorg xinit fbset alsa-base alsa-utils alsa-tools xserver-xorg-legacy dbus-x11 \
-   python-bluez mesa-utils python-lightblue python-simplejson libaacs0"
+#ARG RUNTIME_DEPENDENCIES="xserver-xorg xinit fbset alsa-base alsa-utils alsa-tools xserver-xorg-legacy dbus-x11 \
+#   python-bluez mesa-utils python-lightblue python-simplejson libaacs0"
 
-RUN apt-get update && apt-get install --no-install-recommends -y $RUNTIME_DEPENDENCIES && apt-get clean && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install --no-install-recommends -y $RUNTIME_DEPENDENCIES && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configure Kodi group
 RUN usermod -a -G audio root && \
@@ -48,10 +69,10 @@ usermod -a -G dialout root && \
 usermod -a -G plugdev root && \
 usermod -a -G tty root
 
-# needed udev files
-COPY "./files-to-copy-to-image/Xwrapper.config" "/etc/X11"
-COPY "./files-to-copy-to-image/10-permissions.rules" "/etc/udev/rules.d"
-COPY "./files-to-copy-to-image/99-input.rules" "/etc/udev/rules.d"
+## needed udev files
+#COPY "./files-to-copy-to-image/Xwrapper.config" "/etc/X11"
+#COPY "./files-to-copy-to-image/10-permissions.rules" "/etc/udev/rules.d"
+#COPY "./files-to-copy-to-image/99-input.rules" "/etc/udev/rules.d"
 
 # Kodi directories
 RUN  mkdir -p /config/kodi/userdata >/dev/null 2>&1 || true && rm -rf /root/.kodi && ln -s /config/kodi /root/.kodi \
