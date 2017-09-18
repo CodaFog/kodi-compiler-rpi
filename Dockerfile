@@ -27,12 +27,17 @@ RUN wget -q https://raw.githubusercontent.com/PIPplware/xbmc/krypton_new/tools/L
   && chmod +x build_rpi_debian_packages.sh && sed -i 's/EXTRA_FLAGS="/EXTRA_FLAGS="-DRPI=1 /g' build_rpi_debian_packages.sh
 
 # uncomment to remove some options for Kodi
-RUN sed -i 's/DENABLE_MMAL=ON/DENABLE_MMAL=AUTO/g' build_rpi_debian_packages.sh 
-RUN sed -i 's/DENABLE_DVDCSS=ON/DENABLE_DVDCSS=AUTO/g' build_rpi_debian_packages.sh 
-RUN sed -i 's/DENABLE_MYSQLCLIENT=ON/DENABLE_MYSQLCLIENT=AUTO/g' build_rpi_debian_packages.sh 
-RUN sed -i 's/DENABLE_LIRC=ON/DENABLE_LIRC=AUTO/g' build_rpi_debian_packages.sh 
-RUN sed -i 's/DENABLE_BLURAY=ON/DENABLE_BLURAY=AUTO/g' build_rpi_debian_packages.sh 
-RUN sed -i 's/DENABLE_AIRTUNES=ON/DENABLE_AIRTUNES=OFF/g' build_rpi_debian_packages.sh 
+#RUN sed -i 's/DENABLE_MMAL=ON/DENABLE_MMAL=AUTO/g' build_rpi_debian_packages.sh 
+#RUN sed -i 's/DENABLE_DVDCSS=ON/DENABLE_DVDCSS=AUTO/g' build_rpi_debian_packages.sh 
+#RUN sed -i 's/DENABLE_MYSQLCLIENT=ON/DENABLE_MYSQLCLIENT=AUTO/g' build_rpi_debian_packages.sh 
+#RUN sed -i 's/DENABLE_LIRC=ON/DENABLE_LIRC=AUTO/g' build_rpi_debian_packages.sh 
+#RUN sed -i 's/DENABLE_BLURAY=ON/DENABLE_BLURAY=AUTO/g' build_rpi_debian_packages.sh 
+#RUN sed -i 's/DENABLE_AIRTUNES=ON/DENABLE_AIRTUNES=OFF/g' build_rpi_debian_packages.sh 
+
+# compile tools
+RUN cd tools/depends && ./bootstrap &&  \
+   ./configure --with-platform=raspberry-pi2 --host=arm-linux-gnueabihf --prefix=/opt/xbmc-deps --with-tarballs=/opt/xbmc-tarballs \
+   && make
 
 # compile Kodi
 RUN ./build_rpi_debian_packages.sh
